@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "UE5MultiplayerPluginCharacter.h"
+#include "UE5MultiplayerPlugin/Public/UE5MultiplayerPluginCharacter.h"
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
