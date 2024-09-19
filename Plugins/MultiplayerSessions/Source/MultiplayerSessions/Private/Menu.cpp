@@ -4,8 +4,11 @@
 #include "Components/Button.h"
 #include "MultiplayerSessionsSubsystem.h"
 
-void UMenu::MenuSetup()
+void UMenu::MenuSetup(int32 NumberOfPublicConnections, FString TypeOfMatch)
 {
+	NumPublicConnections = NumberOfPublicConnections;
+	MatchType = TypeOfMatch;
+
 	AddToViewport();
 	SetVisibility(ESlateVisibility::Visible);
 	bIsFocusable = true;
@@ -48,7 +51,7 @@ bool UMenu::Initialize()
 
 void UMenu::NativeDestruct()
 {
-	//MenuTearDown();
+	MenuTearDown();
 
 	Super::NativeDestruct();
 }
@@ -64,8 +67,13 @@ void UMenu::HostButtonClicked()
 		return;
 	}
 
-	// temp hardcoding for testing
-	MultiplayerSessionsSubsystem->CreateSession(4, FString("FreeForAll"));
+	MultiplayerSessionsSubsystem->CreateSession(NumPublicConnections, MatchType);
+	UWorld* World = GetWorld();
+
+	if (World)
+	{
+		World->ServerTravel("/Game/Dynamic/ThirdPerson/Maps/Lobby?listen");
+	}
 }
 
 void UMenu::JoinButtonClicked()
@@ -80,4 +88,22 @@ void UMenu::JoinButtonClicked()
 	}
 
 	//MultiplayerSessionsSubsystem->FindSessions(10);
+}
+
+void UMenu::MenuTearDown()
+{
+	RemoveFromParent();
+
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		APlayerController* PlayerController = World->GetFirstPlayerController();
+
+		if (PlayerController)
+		{
+			FInputModeGameOnly InputModeData;
+			PlayerController->SetInputMode(InputModeData);
+			PlayerController->SetShowMouseCursor(false);
+		}
+	}
 }
