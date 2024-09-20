@@ -55,28 +55,5 @@ protected:
 	void Look(const FInputActionValue& Value);
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-    virtual void BeginPlay();	
-
-
-// UE5MultiplayerCode Starts Here
-public:
-    IOnlineSessionPtr OnlineSessionInterface;
-    
-protected:
-	UFUNCTION(BlueprintCallable)
-	void CreateGameSession();
-	
-	UFUNCTION(BlueprintCallable)
-	void JoinGameSession();
-
-	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
-	void OnFindSessionsComplete(bool bWasSuccessful);
-	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
-     
-private:
-    FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
-	FOnFindSessionsCompleteDelegate FindSessionsCompleteDelegate;
-	TSharedPtr<FOnlineSessionSearch> SessionSearch;
-	FOnJoinSessionCompleteDelegate JoinSessionCompleteDelegate;
+    virtual void BeginPlay();
 };
-
